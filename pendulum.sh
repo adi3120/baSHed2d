@@ -32,7 +32,7 @@ while :; do
 
     bobX=$(echo "scale=10; $len * s($angle)+$originX" | bc -l)
     bobY=$(echo "scale=10; $len * c($angle)+$originY" | bc -l)
-    drawLine $originX $originY ${bobX%.*} ${bobY%.*}
+    drawLine $originX $originY ${bobX%.*} ${bobY%.*} '@'
 
     yco+=(${bobX%.*})
 
@@ -80,6 +80,8 @@ while :; do
             drawPointCustom ${xco[$i]} ${yco[$i]} '@'
         fi 
     done
+    drawCircle ${bobY%.*} ${bobX%.*} 5 'o'
+
 
     drawCanvas
     moveCursorToBegining
