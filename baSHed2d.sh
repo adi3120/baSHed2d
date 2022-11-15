@@ -27,12 +27,6 @@ moveCursorToBegining() {
     echo -e "\e[H"
 }
 
-drawPoint() {
-    local x=$1
-    local y=$2
-    canvas["$x", "$y"]='#'
-}
-
 drawPointCustom() {
     local x=$1
     local y=$2
@@ -45,6 +39,7 @@ drawRectange() {
     b=$2
     x=$3
     y=$4
+    c=$5
     i=0
     j=0
 
@@ -52,7 +47,7 @@ drawRectange() {
         for ((j = 0; j < $l; j++)); do
             px=$(($x + $i))
             py=$(($y + $j))
-            drawPoint $px $py
+            drawPointCustom $px $py $c
         done
     done
 }
@@ -61,6 +56,7 @@ drawCircle() {
     cx=$1
     cy=$2
     r=$3
+    c=$4
 
     if [ $cx -lt $rows ] && [ $cy -lt $cols ] && [ $cx -gt 0 ] && [ $cy -gt 0 ]; then
 
@@ -73,7 +69,7 @@ drawCircle() {
                 if [ $xsqr_plus_ysqr -lt $rsqr ]; then
                     px=$(($cx + $xn))
                     py=$(($cy + $yn))
-                    drawPoint $px $py
+                    drawPointCustom $px $py $c
                 fi
             done
         done
@@ -87,6 +83,7 @@ drawLine() {
     x1=$2
     y2=$3
     x2=$4
+    c=$5
 
     dx=$(($x2 - $x1))
     dy=$(($y2 - $y1))
@@ -114,7 +111,7 @@ drawLine() {
             y=$y2
             xe=$x1
         fi
-        drawPoint $x $y
+        drawPointCustom $x $y $c
         for ((i = 0; x < $xe; i++)); do
             x=$(($x + 1))
             if ((px < 0)); then
@@ -131,7 +128,7 @@ drawLine() {
                 two_dy1_minus_dx1=(2*$dy1_minus_dx1)
                 px=$(($px + $two_dy1_minus_dx1))
             fi
-            drawPoint $x $y
+            drawPointCustom $x $y $c
         done
 
     else
@@ -144,7 +141,7 @@ drawLine() {
             y=$y2
             ye=$y1
         fi
-        drawPoint $x $y
+        drawPointCustom $x $y $c
         for ((i = 0; y < $ye; i++)); do
             y=$(($y + 1))
             if ((py <= 0)); then
@@ -161,7 +158,7 @@ drawLine() {
                 two_dx1_minus_dy1=(2*$dx1_minus_dy1)
                 py=$(($py + $two_dx1_minus_dy1))
             fi
-            drawPoint $x $y
+            drawPointCustom $x $y $c
         done
     fi
 }
