@@ -8,7 +8,7 @@ cols=40
 createCanvas() {
     for ((i = 0; i < $rows; i++)); do
         for ((j = 0; j < $cols; j++)); do
-            canvas[$i, $j]="."
+            canvas[$i, $j]=" "
         done
     done
 }
@@ -19,7 +19,7 @@ drawCanvas() {
         for ((j = 0; j < $cols; j++)); do
             str+="${canvas[$i, $j]} "
         done
-        echo $str
+        echo "$str"
     done
 }
 
@@ -58,22 +58,30 @@ drawCircle() {
     r=$3
     c=$4
 
-    if [ $cx -lt $rows ] && [ $cy -lt $cols ] && [ $cx -gt 0 ] && [ $cy -gt 0 ]; then
+    bx=$(($cx - $r)) 
+    by=$(($cy - $r)) 
 
-        for ((yn = (-$r); yn <= $r; yn++)); do
-            for ((xn = (-$r); xn <= $r; xn++)); do
-                xsqr=$(($xn * $xn))
-                ysqr=$(($yn * $yn))
-                xsqr_plus_ysqr=$(($xsqr + $ysqr))
-                rsqr=$(($r * $r))
-                if [ $xsqr_plus_ysqr -lt $rsqr ]; then
-                    px=$(($cx + $xn))
-                    py=$(($cy + $yn))
-                    drawPointCustom $px $py $c
+    ex=$(($cx + $r)) 
+    ey=$(($cy + $r)) 
+
+
+    for ((yn = $by; yn <= $ey; yn++)); do
+        for ((xn = $bx; xn <= $ex; xn++)); do
+            dx=$(($cx - $xn))
+            dy=$(($cy - $yn))
+            xsqr=$(($dx * $dx))
+            ysqr=$(($dy * $dy))
+            
+            xsqr_plus_ysqr=$(($xsqr + $ysqr))
+            rsqr=$(($r * $r))
+
+            if [ $xsqr_plus_ysqr -le $rsqr ]; then
+                if [ $xn -ge 0 ] && [ $xn -le $cols ] && [ $yn -ge 0 ] && [ $yn -le $rows ]; then
+                    drawPointCustom $yn $xn $c
                 fi
-            done
+            fi
         done
-    fi
+    done
 }
 
 
@@ -161,4 +169,58 @@ drawLine() {
             drawPointCustom $x $y $c
         done
     fi
+}
+
+floatDivision(){
+    a=$1
+    b=$2
+
+    result=$(echo "scale=5; $a/$b" | bc -l)
+    echo "$result"
+}
+
+floatMultiplication(){
+    a=$1
+    b=$2
+
+    result=$(echo "scale=5; $a * $b" | bc -l)
+    echo "$result"
+}
+
+floatAddition(){
+    a=$1
+    b=$2
+    result=$(echo "scale=5; $a + $b" | bc -l)
+    echo "$result"
+
+}
+
+floatSubtraction(){
+    a=$1
+    b=$2
+    result=$(echo "scale=5; $a - $b" | bc -l)
+    echo "$result"
+}
+
+floatToInt(){
+    a=$1
+    echo ${a%.*}   
+}
+
+giveNeg(){
+    a=$1
+    a=$((a*-1))
+    echo $a
+}
+
+sine(){
+    a=$1
+    result=$(echo "scale=10; s($a)" | bc -l)
+    echo $result
+}
+
+cosine(){
+    a=$1
+    result=$(echo "scale=10; c($a)" | bc -l)
+    echo $result
 }

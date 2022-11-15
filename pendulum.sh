@@ -2,16 +2,20 @@ source ./baSHed2d.sh
 
 clear
 
-originX=20
+
+rows=30
+cols=50
+
+originX=25
 originY=0
 PI=$(echo "scale=5; 4*a(1)" | bc -l)
 bobX=20
 bobY=20
 len=20
-angleV=$(echo "scale=2; 0" | bc -l)
-angleA=$(echo "scale=2; 0" | bc -l)
-angle=$(echo "scale=2; $PI/3" | bc -l)
-gravity=$(echo "scale=5; 1" | bc -l)
+angleV=0
+angleA=0
+angle=$(echo "scale=2; $PI/5" | bc -l)
+gravity=$(echo "scale=5; 2" | bc -l)
 force=$(echo "scale=5; $gravity * s($angle)" | bc -l)
 
 xco=()
@@ -22,21 +26,27 @@ coSize=0
 
 while :; do
     createCanvas
-    force=$(echo "scale=5; $gravity * s($angle)/$len" | bc -l)
 
-    angleA=$(echo "scale=5; -1 * $force" | bc -l)
-    angleV=$(echo "scale=5; $angleV + $angleA" | bc -l)
+    force=$(floatMultiplication $gravity $(floatDivision $angle $len))
 
-    angle=$(echo "scale=5; $angle + $angleV" | bc -l)
-    angleV=$(echo "scale=5; $angleV * 0.99" | bc -l)
+    angleA=$(floatMultiplication -1 $force)
 
-    bobX=$(echo "scale=10; $len * s($angle)+$originX" | bc -l)
-    bobY=$(echo "scale=10; $len * c($angle)+$originY" | bc -l)
-    drawLine $originX $originY ${bobX%.*} ${bobY%.*} '@'
+    angleV=$(floatAddition $angleA $angleV)
 
-    yco+=(${bobX%.*})
+    angle=$(floatAddition $angle $angleV)
 
-    xco+=(${bobY%.*})
+    angleV=$(floatMultiplication $angleV 0.99)
+
+    bobX=$(floatAddition $(floatMultiplication $len $(sine $angle)) $originX)
+
+    bobY=$(floatAddition $(floatMultiplication $len $(cosine $angle)) $originY)
+
+
+    drawLine $originX $originY $(floatToInt $bobX) $(floatToInt $bobY) '@'
+
+    yco+=($(floatToInt $bobX))
+
+    xco+=($(floatToInt $bobY))
 
     coSize=$(($coSize + 1))
 
@@ -80,7 +90,7 @@ while :; do
             drawPointCustom ${xco[$i]} ${yco[$i]} '@'
         fi 
     done
-    drawCircle ${bobY%.*} ${bobX%.*} 5 'o'
+    drawCircle $(floatToInt $bobX) $(floatToInt $bobY) 3 'o'
 
 
     drawCanvas
