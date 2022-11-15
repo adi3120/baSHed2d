@@ -8,15 +8,14 @@ cols=50
 
 originX=25
 originY=0
-PI=$(echo "scale=5; 4*a(1)" | bc -l)
+
 bobX=20
 bobY=20
 len=20
 angleV=0
 angleA=0
-angle=$(echo "scale=2; $PI/5" | bc -l)
-gravity=$(echo "scale=5; 2" | bc -l)
-force=$(echo "scale=5; $gravity * s($angle)" | bc -l)
+angle=$(floatDivision $PI 5)
+gravity=1
 
 xco=()
 yco=()

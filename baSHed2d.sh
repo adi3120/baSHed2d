@@ -5,6 +5,8 @@ declare -A canvas
 rows=30
 cols=40
 
+PI=$(echo "scale=10; 4*a(1)" | bc -l)
+
 createCanvas() {
     for ((i = 0; i < $rows; i++)); do
         for ((j = 0; j < $cols; j++)); do
