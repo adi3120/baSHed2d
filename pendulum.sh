@@ -2,7 +2,6 @@ source ./baSHed2d.sh
 
 clear
 
-
 rows=30
 cols=50
 
@@ -11,10 +10,13 @@ originY=0
 
 bobX=20
 bobY=20
+
 len=20
+
 angleV=0
 angleA=0
 angle=$(floatDivision $PI 5)
+
 gravity=1
 
 xco=()
@@ -29,24 +31,18 @@ while :; do
     force=$(floatMultiplication $gravity $(floatDivision $angle $len))
 
     angleA=$(floatMultiplication -1 $force)
-
     angleV=$(floatAddition $angleA $angleV)
-
     angle=$(floatAddition $angle $angleV)
-
     angleV=$(floatMultiplication $angleV 0.99)
 
     bobX=$(floatAddition $(floatMultiplication $len $(sine $angle)) $originX)
-
     bobY=$(floatAddition $(floatMultiplication $len $(cosine $angle)) $originY)
 
 
     drawLine $originX $originY $(floatToInt $bobX) $(floatToInt $bobY) '@'
 
     yco+=($(floatToInt $bobX))
-
     xco+=($(floatToInt $bobY))
-
     coSize=$(($coSize + 1))
 
     if [[ $coSize -ge $n ]]
@@ -90,7 +86,6 @@ while :; do
         fi 
     done
     drawCircle $(floatToInt $bobX) $(floatToInt $bobY) 3 'o'
-
 
     drawCanvas
     moveCursorToBegining
