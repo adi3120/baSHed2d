@@ -38,7 +38,6 @@ while :; do
     bobX=$(floatAddition $(floatMultiplication $len $(sine $angle)) $originX)
     bobY=$(floatAddition $(floatMultiplication $len $(cosine $angle)) $originY)
 
-
     drawLine $originX $originY $(floatToInt $bobX) $(floatToInt $bobY) '@'
 
     yco+=($(floatToInt $bobX))

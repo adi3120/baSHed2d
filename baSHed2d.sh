@@ -2,7 +2,7 @@
 
 declare -A canvas
 
-rows=30
+rows=20
 cols=40
 
 PI=$(echo "scale=10; 4*a(1)" | bc -l)
@@ -177,7 +177,7 @@ floatDivision(){
     a=$1
     b=$2
 
-    result=$(echo "scale=5; $a/$b" | bc -l)
+    result=$(echo "scale=2; $a/$b" | bc -l)
     echo "$result"
 }
 
@@ -185,14 +185,14 @@ floatMultiplication(){
     a=$1
     b=$2
 
-    result=$(echo "scale=5; $a * $b" | bc -l)
+    result=$(echo "scale=2; $a * $b" | bc -l)
     echo "$result"
 }
 
 floatAddition(){
     a=$1
     b=$2
-    result=$(echo "scale=5; $a + $b" | bc -l)
+    result=$(echo "scale=2; $a + $b" | bc -l)
     echo "$result"
 
 }
@@ -200,7 +200,7 @@ floatAddition(){
 floatSubtraction(){
     a=$1
     b=$2
-    result=$(echo "scale=5; $a - $b" | bc -l)
+    result=$(echo "scale=2; $a - $b" | bc -l)
     echo "$result"
 }
 
@@ -211,18 +211,18 @@ floatToInt(){
 
 giveNeg(){
     a=$1
-    a=$((a*-1))
+    a=$((a * -1))
     echo $a
 }
 
 sine(){
     a=$1
-    result=$(echo "scale=10; s($a)" | bc -l)
+    result=$(echo "scale=2; s($a)" | bc -l)
     echo $result
 }
 
 cosine(){
     a=$1
-    result=$(echo "scale=10; c($a)" | bc -l)
+    result=$(echo "scale=2; c($a)" | bc -l)
     echo $result
 }
